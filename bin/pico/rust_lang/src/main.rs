@@ -14,7 +14,7 @@ extern crate rp2040_hal;
 
 // Ensure we halt the program on panic (if we don't mention this crate it won't
 // be linked)
-use panic_halt as _;
+
 
 // Alias for our HAL crate
 use rp2040_hal as hal;
