@@ -1,0 +1,36 @@
+#!/bin/bash
+
+export PICO_SDK_PATH="/home/flofrost/Workbench/Continuum/Libs/pico-sdk"
+
+conf () {
+    rm -r build/ &> /dev/null
+    mkdir build
+    cd build
+    cmake -DPICO_BOARD=pico_w ..
+    echo -e "\nDone!"
+    read
+}
+
+build () {
+    cd build
+    make
+    echo -e "\nDone!"
+    read
+}
+
+upload () {
+    mkdir RPI
+    cp "build/BGM.uf2" "/media/flofrost/RPI-RP2/"
+}
+
+case "$1" in
+    "conf")
+        conf
+        ;;
+    "build")
+        build
+        ;;
+    "upload")
+        upload
+        ;;
+esac
