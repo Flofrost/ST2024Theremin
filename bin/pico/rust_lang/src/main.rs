@@ -14,7 +14,7 @@ extern crate rp2040_hal;
 
 // Ensure we halt the program on panic (if we don't mention this crate it won't
 // be linked)
-
+use panic_halt as _;
 
 // Alias for our HAL crate
 use rp2040_hal as hal;
@@ -68,7 +68,7 @@ fn main() -> ! {
     .ok()
     .unwrap();
 
-    let mut delay = cortex_m::delay::Delay::new(core.SYST, clocks.system_clock.freq().to_Hz());
+    // let mut delay = cortex_m::delay::Delay::new(core.SYST, clocks.system_clock.freq().to_Hz());
 
     // The single-cycle I/O block controls our GPIO pins
     let sio = hal::Sio::new(pac.SIO);
@@ -82,12 +82,9 @@ fn main() -> ! {
     );
 
     // Configure GPIO25 as an output
-    let mut led_pin = pins.gpio25.into_push_pull_output();
+    let mut led_pin = pins.gpio18.into_push_pull_output();
     loop {
         led_pin.set_high().unwrap();
-        delay.delay_ms(500);
-        led_pin.set_low().unwrap();
-        delay.delay_ms(500);
     }
 }
 
