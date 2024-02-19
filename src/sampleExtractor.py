@@ -22,39 +22,35 @@ parser.add_argument("-p", "--periods",
 )
 
 args = parser.parse_args()
-print(args)
 
-periods = args.periods
+numberOfPeriods = args.periods
 f = open(args.filename, "rb")
+
 header = f.read(0x28)
-# f.seek(0x28)
-length = int.from_bytes(f.read(4), byteorder="little")
-# f.seek(0x2C)
-# data = list(f.read())
+fileLength = int.from_bytes(f.read(4), byteorder="little")
+
 data = []
 while True:
-    chunk = f.read(2)
-    if not chunk:
+    sample = f.read(2)
+    if not sample:
         break
 
-    data.append(int.from_bytes(chunk, byteorder="little"))
+    data.append(int.from_bytes(sample, byteorder="little"))
 f.close()
 
-data = data[:length // 2]
-# data = [data[int((i/256) * len(data))] - 128 for i in range(256)]
-# maximum = max(max(data), -min(data))
-# gain = 127 / maximum
-print(data)
+dataLength = len(data)
 
-sampleLength = (length //2) / periods
-for i in range(periods):
+sampleLength = (dataLength) / numberOfPeriods
+
+# Only for testing
+for i in range(numberOfPeriods):
     f = open(f"{i}.wav", "wb")
     f.write(header)
-    f.write(int(sampleLength).to_bytes(4, "little"))
-    for a in [b.to_bytes(2, "little") for b in data[int(sampleLength * i ): int(sampleLength * (i+1))]]:
+    f.write(int(sampleLength * 2).to_bytes(4, "little"))
+    print(int(sampleLength * i), int(sampleLength * (i+1)))
+    for a in [b.to_bytes(2, "little") for b in data[int(sampleLength * i): int(sampleLength * (i+1))]]:
         f.write(a)
     f.close
 
-print(f"Periods: {periods}, File: {args.filename}, Length: {length}")
-# print([int(data[i] * gain) for i in range(256)])
+print(f"FileLength: {fileLength}, DataLength: {dataLength}, SampleLength: {sampleLength}, Periods: {numberOfPeriods}")
 
