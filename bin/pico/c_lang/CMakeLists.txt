@@ -10,12 +10,21 @@ project(pico)
 pico_sdk_init() 
  
 # rest of your project 
-add_executable(blink 
-    blink.c 
+add_executable(pwm 
+    pwm_test.c
 ) 
  
 # Add pico_stdlib library which aggregates commonly used features 
-target_link_libraries(blink pico_stdlib) 
+target_link_libraries(
+    pwm
+    pico_stdlib
+    pico_multicore
+    hardware_pwm
+    hardware_dma
+    hardware_pio
+    hardware_timer
+    hardware_clocks
+) 
  
 # create map/bin/hex/uf2 file in addition to ELF. 
-pico_add_extra_outputs(blink)
+pico_add_extra_outputs(pwm)
