@@ -15,12 +15,6 @@
 #include "sample.h"
 int wav_position = 0;
 
-bool sampleGenerator(struct repeating_timer* timer){
-    pwm_set_chan_level(pwm_gpio_to_slice_num(AUDIO_PIN), 0, 512);
-    
-    return 1;
-}
-
 /*
  * PWM Interrupt Handler which outputs PWM level and advances the 
  * current sample. 
@@ -78,6 +72,6 @@ int main(void) {
 
     pwm_set_gpio_level(AUDIO_PIN, 0);
 
-    struct repeating_timer timer;
-    add_repeating_timer_us(-23, sampleGenerator, NULL, &timer);
+    //struct repeating_timer timer;
+    //add_repeating_timer_us(-23, sampleGenerator, NULL, &timer);
 }
